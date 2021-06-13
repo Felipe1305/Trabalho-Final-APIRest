@@ -113,7 +113,8 @@ public class PedidoService {
 		return pedDTO;
 	}
 
-	public void inserirItem(PedidoDTO pedDTO, Long pedidoId, Integer clientId) throws IdNotFoundException, NullPointerExceptionClient, NullPointerExceptionPedido, QuantindadeInsuficienteException {
+	public void inserirItem(PedidoDTO pedDTO, Long pedidoId, Integer clientId) throws IdNotFoundException,
+			NullPointerExceptionClient, NullPointerExceptionPedido, QuantindadeInsuficienteException {
 		try {
 		serviceClient.buscarId(clientId);
 		} catch (NullPointerException e) {
