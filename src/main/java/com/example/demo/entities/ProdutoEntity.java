@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -33,7 +34,8 @@ public class ProdutoEntity {
 	
 	private LocalDate dataCadastro;
 	
-	private String imagem;
+	@OneToOne
+	private ImageEntity imagem;
 	
 	@JsonBackReference
 	private Integer codigoCategoria;
@@ -98,11 +100,11 @@ public class ProdutoEntity {
 		this.dataCadastro = dataCadastro;
 	}
 
-	public String getImagem() {
+	public ImageEntity getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(String imagem) {
+	public void setImagem(ImageEntity imagem) {
 		this.imagem = imagem;
 	}
 

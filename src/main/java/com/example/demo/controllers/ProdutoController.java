@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.DTO.ProdutoDTO;
 import com.example.demo.controllers.utils.URL;
+import com.example.demo.entities.ImageEntity;
 import com.example.demo.entities.ProdutoEntity;
 import com.example.demo.exceptions.IdNotFoundException;
 import com.example.demo.mapper.ProdutoMapper;
+import com.example.demo.services.ImageService;
 import com.example.demo.services.ProdutoService;
 
 @RestController
@@ -35,6 +40,9 @@ public class ProdutoController {
 		
 		@Autowired
 		ProdutoMapper mapperProd;
+		
+		@Autowired
+		ImageService imageService;
 		
 		@GetMapping
 		public ResponseEntity<List<ProdutoDTO>> findAll () {
@@ -82,6 +90,21 @@ public class ProdutoController {
 			Page<ProdutoDTO> listDTO = list.map(obj -> mapperProd.toDTO(obj));
 			return ResponseEntity.ok().body(listDTO);
 
+		}
+		
+		@PostMapping("/image")
+		public ProdutoDTO create (@RequestParam MultipartFile file, @RequestPart ProdutoEntity produtoEntity) throws IOException {
+		
+			return service.createImage(produtoEntity, file);
+		}
+		
+		@GetMapping(path = "/{id}/image")
+		public ResponseEntity<byte[]> getImagem(@PathVariable Integer id) throws Exception{
+			ImageEntity imagem = imageService.getImage(id);
+			HttpHeaders header = new HttpHeaders();
+			header.add("content-length", String.valueOf(imagem.getData().length));
+			header.add("content-type", imagem.getMimetype());
+			return new ResponseEntity<>(imagem.getData(),header,HttpStatus.OK);
 		}
 		
 		

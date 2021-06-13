@@ -17,7 +17,7 @@ public class EnderecoEntity {
 	
 	
 	@ManyToOne
-	@JoinColumn(name="endereco_id", referencedColumnName = "id")
+	@JoinColumn(name="client_id", referencedColumnName = "id")
 	@JsonBackReference
 	private ClientEntity client;
 	

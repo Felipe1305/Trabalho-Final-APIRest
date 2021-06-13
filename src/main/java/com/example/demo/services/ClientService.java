@@ -5,15 +5,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.DTO.ClientDTO;
+import com.example.demo.DTO.EnderecoDTO;
+import com.example.demo.DTO.ViaCepDTO;
 import com.example.demo.entities.ClientEntity;
 import com.example.demo.entities.EnderecoEntity;
 import com.example.demo.exceptions.IdNotFoundException;
 import com.example.demo.mapper.ClientMapper;
+import com.example.demo.mapper.EnderecoMapper;
 import com.example.demo.repositories.ClientRepository;
 import com.example.demo.repositories.EnderecoRepository;
 
@@ -25,6 +27,9 @@ public class ClientService {
 	
 	@Autowired
 	ClientMapper mapper;
+	
+	@Autowired
+	EnderecoMapper mapperEndereco;
 	
 	@Autowired
 	EnderecoRepository enderecoRepo;
@@ -113,27 +118,44 @@ public class ClientService {
 			repo.findById(id).get().setDataNascimento(catDTO.getDataNascimento());
 			repo.save(repo.findById(id).get());
 		}
-//		if(catDTO.getEnderecoId() != null) {
-//			ViaCepDTO viaCEP =  restTemplate.getForObject(baseUrl + catDTO.getEnderecoId().get(0).getCep() + "/json", ViaCepDTO.class);
-//			
-//			enderecoRepo.findById(id).get().setCidade(viaCEP.getLocalidade());
-//			enderecoRepo.findById(id).get().setBairro(viaCEP.getBairro());
-//			enderecoRepo.findById(id).get().setEstado(viaCEP.getUf());
-//			enderecoRepo.findById(id).get().setRua(viaCEP.getLogradouro());
-//			enderecoRepo.findById(id).get().setCep(viaCEP.getCep());
-//			
-//			enderecoRepo.findById(id).get().setComplemento(catDTO.getEnderecoId().get(0).getComplemento());
-//			enderecoRepo.findById(id).get().setNumero(catDTO.getEnderecoId().get(0).getNumero());
-//		
-//			
-//			enderecoRepo.save(enderecoRepo.findById(id).get());
-//			
-//			List<EnderecoEntity> list = new ArrayList<>();
-//			list.add(enderecoRepo.findById(id).get());
-//			
-//			repo.findById(id).get().setEnderecoId(list);
-//			repo.save(repo.findById(id).get()); 
-//		}
+		if(catDTO.getEnderecoId() != null) {
+			System.out.println("Olá");
+			List<EnderecoDTO> dto = catDTO.getEnderecoId();
+			EnderecoDTO newDTO = new EnderecoDTO();
+			for (EnderecoDTO enderecoDTO : dto) {
+				newDTO = enderecoDTO;
+				ViaCepDTO viaCEP =  restTemplate.getForObject(baseUrl + newDTO.getCep() + "/json", ViaCepDTO.class);
+				newDTO.setCidade(viaCEP.getLocalidade());
+				newDTO.setBairro(viaCEP.getBairro());
+				newDTO.setEstado(viaCEP.getUf());
+				newDTO.setRua(viaCEP.getLogradouro());
+				newDTO.setCep(viaCEP.getCep());
+				newDTO.setComplemento(enderecoDTO.getComplemento());
+				newDTO.setNumero(enderecoDTO.getNumero());
+				newDTO.setClient(repo.getById(id));
+				System.out.println(newDTO);
+			}
+			System.out.println("Aqui" + newDTO);
+			List<EnderecoEntity> entityEnd = enderecoRepo.findByClientId(id);
+			System.out.println(entityEnd);
+			
+			for (EnderecoEntity enderecoEntity : entityEnd) {
+//				 enderecoEntity = mapperEndereco.toEntity(newDTO);
+				
+				enderecoEntity.setCidade(newDTO.getCidade());
+				enderecoEntity.setBairro(newDTO.getBairro());
+				enderecoEntity.setEstado(newDTO.getEstado());
+				enderecoEntity.setRua(newDTO.getRua());
+				enderecoEntity.setCep(newDTO.getCep());
+				enderecoEntity.setComplemento(newDTO.getComplemento());
+				enderecoEntity.setNumero(newDTO.getNumero());
+
+				enderecoRepo.save(enderecoEntity);
+			}
+//			repo.findById(id).get().setEnderecoId(entityEnd);
+			
+			
+		}
 		
 		return mapper.toDTO(repo.findById(id).get());
 	}

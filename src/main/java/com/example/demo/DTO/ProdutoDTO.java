@@ -3,6 +3,7 @@ package com.example.demo.DTO;
 import java.time.LocalDate;
 
 import com.example.demo.entities.CategoriaEntity;
+import com.example.demo.entities.ImageEntity;
 import com.example.demo.entities.ProdutoEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,7 +22,9 @@ public class ProdutoDTO {
 	
 	private LocalDate dataCadastro;
 	
-	private String imagem;
+	private ImageEntity imagem;
+
+	private String url;
 	
 	@JsonBackReference
 	private Integer codigoCategoria;
@@ -87,14 +90,14 @@ public ProdutoDTO() {
 		this.dataCadastro = dataCadastro;
 	}
 
-	public String getImagem() {
+
+	public ImageEntity getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(String imagem) {
+	public void setImagem(ImageEntity imagem) {
 		this.imagem = imagem;
 	}
-
 	public Integer getCodigoCategoria() {
 		return codigoCategoria;
 	}
@@ -128,7 +131,13 @@ public ProdutoDTO() {
 		return "\nProduto  Nome: " + nome + "\nPreco: " + preco + "\n\n";
 	}
 
-
+	public String getUrl() {
+		return url;
+	}
+	
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	
 	

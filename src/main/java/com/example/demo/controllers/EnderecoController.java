@@ -31,7 +31,7 @@ public class EnderecoController {
 		return ResponseEntity.ok().header("Method: ", "Find All").body(service.findAll());
 	}
 	
-	@PostMapping
+	@PostMapping("/create")
 	public ResponseEntity<EnderecoDTO> create (@RequestBody EnderecoDTO catObj) throws HttpClientErrorException{
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Method: ", "Create");

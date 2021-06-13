@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	JWTUtil jwtUtil;
 
 	private static final String[] AUTH_WHITELIST = {
-			"/cliente/cadastro","/produto**","/categoria**", "/pedido/buscar-todos", "pedido/delete/{id}"
+			"**"
 	};
 	
 	@Override

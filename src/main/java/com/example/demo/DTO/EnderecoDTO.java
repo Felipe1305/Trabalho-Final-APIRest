@@ -11,6 +11,7 @@ public class EnderecoDTO {
 	@JsonIgnore
 	private ClientEntity client;
 	
+	@JsonIgnore
 	private Integer codigoEndereco;
 	
 	private String rua;
@@ -112,6 +113,13 @@ public class EnderecoDTO {
 
 	public void setCodigoEndereco(Integer codigoEndereco) {
 		this.codigoEndereco = codigoEndereco;
+	}
+
+	@Override
+	public String toString() {
+		return "EnderecoDTO [client=" + client + ", codigoEndereco=" + codigoEndereco + ", rua=" + rua + ", bairro="
+				+ bairro + ", cidade=" + cidade + ", Estado=" + Estado + ", cep=" + cep + ", numero=" + numero
+				+ ", complemento=" + complemento + ", codigoCliente=" + codigoCliente + "]";
 	}
 	
 	
