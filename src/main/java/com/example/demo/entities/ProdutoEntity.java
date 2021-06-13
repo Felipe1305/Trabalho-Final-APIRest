@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,7 +29,8 @@ public class ProdutoEntity {
 	
 	private String descricao;
 	
-	private Integer preco;
+	@Min(0)
+	private Double preco;
 	
 	private Integer quantidadeEmEstoque;
 	
@@ -76,11 +78,11 @@ public class ProdutoEntity {
 		this.descricao = descricao;
 	}
 
-	public Integer getPreco() {
+	public Double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(Integer preco) {
+	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
 

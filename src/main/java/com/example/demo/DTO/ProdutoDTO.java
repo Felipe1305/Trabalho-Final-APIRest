@@ -10,18 +10,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ProdutoDTO {
 	
+	@JsonIgnore
 	private Integer id;
 	
 	private String nome;
 	
 	private String descricao;
 	
-	private Integer preco;
+	private Double preco;
 	
 	private Integer quantidadeEmEstoque;
 	
 	private LocalDate dataCadastro;
 	
+	@JsonIgnore
 	private ImageEntity imagem;
 
 	private String url;
@@ -66,11 +68,11 @@ public ProdutoDTO() {
 		this.descricao = descricao;
 	}
 
-	public Integer getPreco() {
+	public Double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(Integer preco) {
+	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
 

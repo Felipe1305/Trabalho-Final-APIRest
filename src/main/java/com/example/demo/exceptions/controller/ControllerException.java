@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.example.demo.exceptions.CPFException;
 import com.example.demo.exceptions.IdNotFoundException;
+import com.example.demo.exceptions.NullPointerExceptionClient;
+import com.example.demo.exceptions.NullPointerExceptionPedido;
+import com.example.demo.exceptions.QuantindadeInsuficienteException;
 
 
 @ControllerAdvice
@@ -39,5 +43,28 @@ public class ControllerException {
 		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
+	@ExceptionHandler(CPFException.class)
+	public ResponseEntity<StandardError> dataIntegrity (CPFException e, HttpServletRequest request) {
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(QuantindadeInsuficienteException.class)
+	public ResponseEntity<StandardError> dataIntegrity (QuantindadeInsuficienteException e, HttpServletRequest request) {
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(NullPointerExceptionClient.class)
+	public ResponseEntity<StandardError> dataIntegrity (NullPointerExceptionClient e, HttpServletRequest request) {
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 
+	
+	@ExceptionHandler(NullPointerExceptionPedido.class)
+	public ResponseEntity<StandardError> dataIntegrity (NullPointerExceptionPedido e, HttpServletRequest request) {
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 }

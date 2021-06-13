@@ -64,9 +64,10 @@ public class ProdutoService {
 	}
 
 	public ProdutoDTO update(Integer id, ProdutoDTO prodEnt) throws IdNotFoundException {
+		getById(id);
 		ProdutoDTO  prodNew = prodEnt;
 		
-		ProdutoEntity prod = mapper.toEntity(getById(id));
+		ProdutoEntity prod = repo.findById(id).get();
 		
 		if(prodNew.getNome() != null) {
 			prod.setNome(prodNew.getNome());
@@ -105,6 +106,13 @@ public class ProdutoService {
 				.buildAndExpand(entity.getId()).toUri();
 		ProdutoDTO produto = new ProdutoDTO();
 		produto.setUrl(uri.toString());
+		produto.setCategoria(entity.getCategoria());
+		produto.setNome(entity.getNome());
+		produto.setDescricao(entity.getDescricao());
+		produto.setPreco(entity.getPreco());
+		produto.setQuantidadeEmEstoque(entity.getQuantidadeEmEstoque());
+		produto.setQuantidadeEmEstoque(entity.getQuantidadeEmEstoque());
+		produto.setDataCadastro(entity.getDataCadastro());
 		return produto;
 	}
 	

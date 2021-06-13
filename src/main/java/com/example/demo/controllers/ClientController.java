@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.ClientDTO;
 import com.example.demo.DTO.PedidoDTO;
+import com.example.demo.exceptions.CPFException;
 import com.example.demo.exceptions.IdNotFoundException;
 import com.example.demo.mapper.ProdutoMapper;
 import com.example.demo.repositories.ProdutoRepository;
@@ -70,7 +71,7 @@ public class ClientController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ClientDTO> update(@PathVariable Integer id, @RequestBody ClientDTO catDTO)
-			throws IdNotFoundException {
+			throws IdNotFoundException, CPFException {
 
 		return ResponseEntity.ok().header("Method: ", "Update").body(service.update(id, catDTO));
 	}

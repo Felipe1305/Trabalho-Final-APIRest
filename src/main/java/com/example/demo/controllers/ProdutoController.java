@@ -64,8 +64,8 @@ public class ProdutoController {
 		}
 		
 		@PutMapping("/{id}")
-		public ResponseEntity<ProdutoDTO> update(@PathVariable Integer id, @RequestBody ProdutoDTO prodEnt) throws IdNotFoundException {
-			return ResponseEntity.ok().header("Method: ", "Update").body(service.update(id, prodEnt));
+		public ResponseEntity<ProdutoDTO> update(@PathVariable Integer id, @RequestBody ProdutoDTO prodDTO) throws IdNotFoundException {
+			return ResponseEntity.ok().header("Method: ", "Update").body(service.update(id, prodDTO));
 		}
 		
 		@DeleteMapping("/{id}")

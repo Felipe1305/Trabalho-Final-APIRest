@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.PedidoDTO;
 import com.example.demo.exceptions.IdNotFoundException;
+import com.example.demo.exceptions.NullPointerExceptionClient;
+import com.example.demo.exceptions.NullPointerExceptionPedido;
+import com.example.demo.exceptions.QuantindadeInsuficienteException;
 import com.example.demo.services.PedidoService;
 
 @RestController
@@ -60,7 +63,7 @@ public class PedidoController {
 
 	@PostMapping("/create/{clientId}")
 	public ResponseEntity<String> inserirPedido(@PathVariable Integer clientId, @RequestBody PedidoDTO pedDTO)
-			throws IdNotFoundException {
+			throws IdNotFoundException, QuantindadeInsuficienteException, NullPointerExceptionClient {
 
 		service.createPedido(pedDTO, clientId);
 		return ResponseEntity.ok("Pedido Inserido com sucesso!");
@@ -68,7 +71,8 @@ public class PedidoController {
 
 	@PostMapping("/inserir-item/{pedidoId}/{clientId}")
 	public ResponseEntity<String> inserirItem(@PathVariable Long pedidoId, @PathVariable Integer clientId,
-			@RequestBody PedidoDTO pedDTO) throws IdNotFoundException {
+			@RequestBody PedidoDTO pedDTO) throws IdNotFoundException, NullPointerExceptionClient,
+			NullPointerExceptionPedido, QuantindadeInsuficienteException {
 		service.inserirItem(pedDTO, pedidoId, clientId);
 		return ResponseEntity.ok("Item inserido com sucesso!");
 	}

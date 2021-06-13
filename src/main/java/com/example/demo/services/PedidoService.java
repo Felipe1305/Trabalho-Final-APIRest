@@ -1,12 +1,9 @@
 package com.example.demo.services;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,6 +16,9 @@ import com.example.demo.entities.PedidoEntity;
 import com.example.demo.entities.ProdutoEntity;
 import com.example.demo.entities.ProdutosPedidos;
 import com.example.demo.exceptions.IdNotFoundException;
+import com.example.demo.exceptions.NullPointerExceptionClient;
+import com.example.demo.exceptions.NullPointerExceptionPedido;
+import com.example.demo.exceptions.QuantindadeInsuficienteException;
 import com.example.demo.mapper.PedidoMapper;
 import com.example.demo.mapper.ProdutoMapper;
 import com.example.demo.repositories.ClientRepository;
@@ -55,6 +55,8 @@ public class PedidoService {
 
 	@Autowired
 	JavaMailSender javaMailSender;
+	
+	@Autowired ClientService serviceClient;
 
 //	@Autowired
 //	MailConfig send;
@@ -69,7 +71,13 @@ public class PedidoService {
 		return listDTO;
 	}
 
-	public PedidoDTO createPedido(PedidoDTO pedDTO, Integer id) throws IdNotFoundException {
+	public PedidoDTO createPedido(PedidoDTO pedDTO, Integer id) throws IdNotFoundException, QuantindadeInsuficienteException, NullPointerExceptionClient {
+		try {
+			serviceClient.buscarId(id);
+			} catch (NullPointerException e) {
+				throw new NullPointerExceptionClient ("Cliente não encontrado para esse pedido!");
+			}
+		
 		Double valorTotal = 0.0;
 		pedDTO.setCliente(clientRepo.findById(id).get());
 
@@ -86,6 +94,10 @@ public class PedidoService {
 //			System.out.println(produtoFind);
 			prodPedRepository.save(prodPed);
 			valorTotal += serviceProduto.getByIdInterno(produto.getId()).getPreco() * produto.getQuantidade();
+			
+			if(produto.getQuantidade() > produtoFind.getQuantidadeEmEstoque()) {
+				throw new QuantindadeInsuficienteException ("Quantidade em estoque indisponível!");
+			}
 			produtoFind.setQuantidadeEmEstoque(produtoFind.getQuantidadeEmEstoque() - (produto.getQuantidade()));
 			produtoRepo.save(produtoFind);
 
@@ -101,7 +113,17 @@ public class PedidoService {
 		return pedDTO;
 	}
 
-	public void inserirItem(PedidoDTO pedDTO, Long pedidoId, Integer clientId) throws IdNotFoundException {
+	public void inserirItem(PedidoDTO pedDTO, Long pedidoId, Integer clientId) throws IdNotFoundException, NullPointerExceptionClient, NullPointerExceptionPedido, QuantindadeInsuficienteException {
+		try {
+		serviceClient.buscarId(clientId);
+		} catch (NullPointerException e) {
+			throw new NullPointerExceptionClient ("Cliente não encontrado para esse pedido!");
+		}
+		try {
+		PedidoEntity pedido = repo.findById(pedidoId).get();
+		} catch (NoSuchElementException e) {
+			throw new NullPointerExceptionPedido ("Pedido não encontrado!");
+		}
 		PedidoEntity pedido = repo.findById(pedidoId).get();
 		Double valorTotal = 0.0;
 		for (ProdutosPedidosDTO produto : pedDTO.getListaProdutos()) {
@@ -114,6 +136,9 @@ public class PedidoService {
 			prodPed.setQuantidade(produto.getQuantidade());
 			prodPedRepository.save(prodPed);
 			valorTotal += serviceProduto.getByIdInterno(produto.getId()).getPreco() * produto.getQuantidade();
+			if(produto.getQuantidade() > produtoFind.getQuantidadeEmEstoque()) {
+				throw new QuantindadeInsuficienteException ("Quantidade em estoque indisponível!");
+			}
 			produtoFind.setQuantidadeEmEstoque(produtoFind.getQuantidadeEmEstoque() - (produto.getQuantidade()));
 			produtoRepo.save(produtoFind);
 		}
