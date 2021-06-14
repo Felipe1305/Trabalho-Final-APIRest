@@ -19,6 +19,7 @@ public class ProdutoMapper {
 		dto.setPreco(prodEnt.getPreco());
 		dto.setQuantidadeEmEstoque(prodEnt.getQuantidadeEmEstoque());
 		dto.setCategoria(prodEnt.getCategoria());
+		dto.setUrl(prodEnt.getURL());
 		return dto;
 	}
 	
@@ -32,6 +33,7 @@ public class ProdutoMapper {
 		entity.setPreco(dto.getPreco());
 		entity.setQuantidadeEmEstoque(dto.getQuantidadeEmEstoque());
 		entity.setCategoria(dto.getCategoria());
+		entity.setURL(dto.getUrl());
 		return entity;
 	}
 }

@@ -36,6 +36,8 @@ public class ProdutoEntity {
 	
 	private LocalDate dataCadastro;
 	
+	private String URL;
+	
 	@OneToOne
 	private ImageEntity imagem;
 	
@@ -137,6 +139,14 @@ public class ProdutoEntity {
 	@Override
 	public String toString() {
 		return "Nome: " + nome + "\n Preco=" + preco;
+	}
+
+	public String getURL() {
+		return URL;
+	}
+
+	public void setURL(String uRL) {
+		URL = uRL;
 	}
 
 

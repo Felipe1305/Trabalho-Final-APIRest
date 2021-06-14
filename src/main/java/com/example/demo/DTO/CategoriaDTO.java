@@ -3,11 +3,11 @@ package com.example.demo.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.entities.ProdutoEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CategoriaDTO {
 	
-	
+	@JsonIgnore
 	private Integer id;
 	
 	private String nome;

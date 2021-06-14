@@ -22,6 +22,7 @@ import com.example.demo.DTO.CategoriaDTO;
 import com.example.demo.controllers.utils.URL;
 import com.example.demo.entities.CategoriaEntity;
 import com.example.demo.exceptions.IdNotFoundException;
+import com.example.demo.exceptions.NullPointerExceptionCategoria;
 import com.example.demo.mapper.CategoriaMapper;
 import com.example.demo.services.CategoriaService;
 
@@ -58,7 +59,7 @@ public class CategoriaController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<CategoriaDTO> update(@PathVariable Integer id, @RequestBody CategoriaDTO catEnt)
-			throws IdNotFoundException {
+			throws IdNotFoundException, NullPointerExceptionCategoria {
 		return ResponseEntity.ok().header("Method: ", "Update").body(service.update(id, catEnt));
 	}
 

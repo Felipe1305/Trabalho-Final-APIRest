@@ -45,10 +45,10 @@ public class CategoriaService {
 	}
 
 	public CategoriaDTO buscarId(Integer id) throws IdNotFoundException {
-	CategoriaDTO catReturn =mapper.toDTO(repo.findById(id).get());
 		if(repo.findById(id).isEmpty()) {
 			throw new IdNotFoundException ("Id não encontrado!");
 		}
+		CategoriaDTO catReturn =mapper.toDTO(repo.findById(id).get());
 	
 		return catReturn;
 	}
